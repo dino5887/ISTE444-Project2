@@ -1,0 +1,12 @@
+{% extends 'layout.html'%}
+
+{% block content %}
+    <div>
+        {% for pokemon in data %}
+        <div class="cards">
+            <span>{{ pokemon['types'] }}</span>
+            <p>{{ pokemon['name'] }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endblock content %}
