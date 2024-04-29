@@ -4,6 +4,8 @@ import flask
 from pymongo import MongoClient
 import bcrypt
 import jwt
+import requests
+import json
 from auth_middlewear import token_required
 app = Flask(__name__)
 
@@ -79,7 +81,7 @@ def about():
 
 @app.route('/downloadImages', methods=['GET'])
 def download():
-    req = requests.get('https://pokeapi.co/api/v2/pokemon-form/132/')
+    req = requests.get('https://pokeapi.co/api/v2/pokemon-form/132')
     data = json.loads(req.content)
     return render_template('downloadImagesTest.html', data=data)
 # data=data['all']
