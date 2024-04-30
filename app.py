@@ -1,3 +1,4 @@
+import codecs
 import os
 import time
 from flask import Flask, render_template, request, url_for, redirect
@@ -20,6 +21,7 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 db = client.Pokedex
 pokemon = db.Pokemon
 users = db.Users
+grid_fs = gridfs.GridFS(db)
 
 @app.route('/', methods=('GET', 'POST'))
 def login():
@@ -75,41 +77,43 @@ def home(current_user):
         numberCaught = int(request.form['numberCaught'])
         print(request.files['picture'])
 
-        target = os.path.join(APP_ROOT, 'pictures/')  #folder path
-        if not os.path.isdir(target):
-            os.mkdir(target)     # create folder if not exits
+        image = request.files['picture']
+        name = image.filename
+        id = grid_fs.put(image, content_type = image.content_type, filename = name)
+        query = {
+            'id': id,
+            'pokedexNumber': pokedexNumber,
+            'pokemonName': pokemonName,
+            'numberCaught': numberCaught,
+        }
+        status = pokemon.insert_one(query)
 
-        upload = request.files['picture']
-        filename = upload.filename
-        destination = "/".join([target, filename])
-        upload.save(destination)
-        #pokemon.insert_one({'': filename})   #insert into database mongo db
-
-        
-        fs = gridfs.GridFS(db, collection='pokemon')
-
-        with open(destination, filename) as file_data:
-            data = file_data.read()
-
-        fs.put(data, filename=filename)
-        pokemon.insert_one({'pokedexNumber': pokedexNumber, 'pokemonName': pokemonName, 'numberCaught': numberCaught, 'picture': filename})
         return redirect(url_for('home'))
 
-    #all_pokemon = pokemon.find()
+
     return render_template('home.html')
 
 
-@app.route('/about')
-def about():
-    return '<h3>This is a Flask web application.</h3>'
+@app.route('/singlePokemon')
+@token_required
+def singlePokemon(self):
+    name = request.args.get('pokemonName', type = str)
+    single_pokemon = pokemon.find_one({'pokemonName': name})
+    image = grid_fs.get(single_pokemon['id'])
+    base64_data = codecs.encode(image.read(), 'base64')
+    image = base64_data.decode('utf-8')
+    single_pokemon.update({"image":image})
+    print(single_pokemon)
+    return render_template('singlePokemon.html', pokemonList=single_pokemon)
 
 
+@app.route('/allPokemon')
+@token_required
+def allPokemon():
 
-@app.route('/downloadImages', methods=['GET'])
-def download():
-    req = requests.get('https://pokeapi.co/api/v2/pokemon-form/132')
-    data = json.loads(req.content)
-    return render_template('downloadImagesTest.html', data=data)
-# data=data['all']
-# data=data['property tag we specifically we want from the data so front_default']
-# '<h3>This is a Flask web application.</h3>'
+    all_pokemon = pokemon.find()
+    for single_pokemon in all_pokemon:
+        image = grid_fs.get(pkmn['id'])
+
+    return render_template('allPokemon.html', pokemonList=all_pokemon)
+

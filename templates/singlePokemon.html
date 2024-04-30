@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FlaskApp</title>
+    <style>
+        .todo {
+            padding: 20px;
+            margin: 10px;
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+    <h1>FlaskPokemon</h1>
+    <hr>
+    <div class="content">
+        <table>
+        <tr>
+            <td>{{pokemonList.pokemonName}}</td>
+            <td>{{pokemonList.numberCaught}}</td>
+            <td>{{pokemonList.pokedexNumber}}</td>
+            <img src = "data:image/png;base64, {{pokemonList.image}}"/>
+        </tr>
+        </table>
+    </div>
+</body>
+</html>
