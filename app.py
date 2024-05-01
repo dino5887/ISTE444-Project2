@@ -12,15 +12,31 @@ import gridfs
 from auth_middlewear import token_required
 import logging
 from datetime import datetime, timezone
+
+time_format = "%Y-%m-%d %H:%M:%ST%z"
+formatter = logging.Formatter(fmt='%(asctime)s - %(levelname)s - %(message)s', datefmt=time_format)
+
+# Create a logger and set the custom formatter
+logger = logging.getLogger('custom_logger')
+handler = logging.StreamHandler()
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
+# Set the log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+logger.setLevel(logging.INFO)
+
+# logging.basicConfig(filename='app.log', level=logging.INFO, format='%(asctime)s %(levelname)s %(name)s : %(message)s')
+# logging.basicConfig(filename='record.log',
+#                 level=logging.DEBUG, format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 app = Flask(__name__)
 
 secret = 'aerop45gkaeh3$%Y^^YAc4'
 # Secure this or something if actually deployed
 
-app.logger.setLevel(logging.INFO)  # Set log level to INFO
-handler = logging.FileHandler('app.log')  # Log to a file
-app.logger.addHandler(handler)
-formatter = logging.Formatter("%(asctime)s;%(levelname)s;%(message)s","%Y-%m-%d %H:%M:%ST%z")
+# app.logger.setLevel(logging.INFO)  # Set log level to INFO
+# handler = logging.FileHandler('app.log')  # Log to a file
+# app.logger.addHandler(handler)
+# formatter = logging.Formatter("%(asctime)s;%(levelname)s;%(message)s","%Y-%m-%d %H:%M:%ST%z")
 
 # def utcformat(dt, timespecification='seconds'):
 #     """convert datetime to string in UTC format (YYYY-mm-ddTHH:MM:SSZ)"""
@@ -50,7 +66,6 @@ def login():
             username = request.form['username']
             password = request.form['password']
             
-
             foundUser = users.find_one({'username': username})
 
             passwordBytes = bytes(password, 'utf-8')
