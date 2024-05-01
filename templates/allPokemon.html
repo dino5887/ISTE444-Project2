@@ -19,10 +19,11 @@
         <table>
             <thead>
                 <tr>
-                    <th>Pokedex Number</th>
+                    <th>Pokedex #</th>
                     <th>Name</th>
-                    <th>Number Caught</th>
+                    <th># Caught</th>
                     <th>Image</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,6 +33,7 @@
                         <td>{{pokemon.pokedexNumber}}</td>
                         <td>{{pokemon.numberCaught}}</td>
                         <td><img src = "data:image/png;base64, {{pokemon.image}}"/></td>
+                        <td><a href="deletePokemon?pokemonName={{pokemon.pokemonName}}">Delete</a> </td>
                     </tr>
                 {% endfor %} 
             </tbody>

@@ -122,3 +122,15 @@ def allPokemon(self):
 
     return render_template('allPokemon.html', pokemonList=all_pokemon)
 
+
+@app.route('/deletePokemon')
+@token_required
+def deletePokemon(self):
+    name = request.args.get('pokemonName', type = str)
+    single_pokemon = pokemon.find_one({'pokemonName': name})
+    print(singlePokemon)
+    print(single_pokemon['_id'])
+    grid_fs.delete(single_pokemon['_id'])
+    deleted_pokemon = pokemon.delete_one({'pokemonName': name})
+    
+    return render_template('deletedPokemon.html', deletedPokemon=deleted_pokemon)
