@@ -1,1 +1,27 @@
 This is our log file. Will get appended to while the server is running.
+2024-05-01 11:05:35 T/EDT - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-05-01 11:05:35 T/EDT - INFO - [33mPress CTRL+C to quit[0m
+2024-05-01 11:06:04 T/EDT - INFO - 127.0.0.1 - - [01/May/2024 11:06:04] "[31m[1mGET /allPokemon HTTP/1.1[0m" 401 -
+2024-05-01 11:06:10 T/EDT - INFO - Start of the login route.
+2024-05-01 11:06:10 T/EDT - INFO - Now rendering login page for 
+2024-05-01 11:06:10 T/EDT - INFO - 127.0.0.1 - - [01/May/2024 11:06:10] "GET / HTTP/1.1" 200 -
+2024-05-01 11:06:10 T/EDT - INFO - 127.0.0.1 - - [01/May/2024 11:06:10] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-05-01 11:18:12 T/EDT - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.16.1.69:5000
+2024-05-01 11:18:12 T/EDT - INFO - [33mPress CTRL+C to quit[0m
+2024-05-01 11:18:33 T/EDT - INFO - Start of the login route.
+2024-05-01 11:18:33 T/EDT - INFO - Now rendering login page for 
+2024-05-01 11:18:33 T/EDT - INFO - 127.0.0.1 - - [01/May/2024 11:18:33] "GET / HTTP/1.1" 200 -
+2024-05-01 11:18:33 T/EDT - INFO - 127.0.0.1 - - [01/May/2024 11:18:33] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-05-01 11:18:42 T/EDT - INFO - Start of the login route.
+2024-05-01 11:18:42 T/EDT - INFO - Login Successful for user dean
+2024-05-01 11:18:42 T/EDT - ERROR - Login hit exception during password check.
+Traceback (most recent call last):
+  File "/home/student/Documents/ISTE444-Project2/app.py", line 60, in login
+    encoded_jwt = jwt.encode({"exp":expiration, "username": username, "role": foundUser['role']}, secret, algorithm="HS256")
+                  ^^^^^^^^^^
+AttributeError: module 'jwt' has no attribute 'encode'
+2024-05-01 11:18:42 T/EDT - INFO - 127.0.0.1 - - [01/May/2024 11:18:42] "[35m[1mPOST / HTTP/1.1[0m" 500 -
