@@ -11,3 +11,12 @@ body{
     margin-bottom: 5px;
     border-radius: 2px;
 }
+.content {
+    padding: 20px;
+    margin: 10px;
+    background-color: #FFA500;
+}
+img {
+    max-width: auto;
+    max-height: 10%;
+}

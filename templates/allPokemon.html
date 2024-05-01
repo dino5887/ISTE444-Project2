@@ -4,13 +4,7 @@
     <meta charset="UTF-8">
     <title>FlaskApp</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-    <style>
-        .todo {
-            padding: 20px;
-            margin: 10px;
-            background-color: #eee;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css')}}">
 </head>
 <body>
     <h1>All Pokemon:</h1>
@@ -32,7 +26,7 @@
                         <td>{{pokemon.pokemonName}}</td>
                         <td>{{pokemon.pokedexNumber}}</td>
                         <td>{{pokemon.numberCaught}}</td>
-                        <td><img src = "data:image/png;base64, {{pokemon.image}}"/></td>
+                        <td><img src = "data:image/png;base64, {{pokemon.image}}", width="100", height="100"/></td>
                         <td><a href="deletePokemon?pokemonName={{pokemon.pokemonName}}">Delete</a> </td>
                     </tr>
                 {% endfor %} 
