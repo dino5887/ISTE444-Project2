@@ -89,7 +89,32 @@ def home(current_user):
         return redirect(url_for('home'))
 
 
+    return render_template('home.html',current_user=current_user)
+
+@app.route('/register', methods=('GET', 'POST'))
+def register():
+    if request.method=='POST':
+        pokedexNumber = int(request.form['pokedexNumber'])
+        pokemonName = request.form['pokemonName']
+        numberCaught = int(request.form['numberCaught'])
+        print(request.files['picture'])
+
+        image = request.files['picture']
+        name = image.filename
+        id = grid_fs.put(image, content_type = image.content_type, filename = name)
+        query = {
+            'id': id,
+            'pokedexNumber': pokedexNumber,
+            'pokemonName': pokemonName,
+            'numberCaught': numberCaught,
+        }
+        status = pokemon.insert_one(query)
+
+        return redirect(url_for('home'))
+
+
     return render_template('home.html')
+
 
 
 @app.route('/singlePokemon')
@@ -134,3 +159,30 @@ def deletePokemon(self):
     deleted_pokemon = pokemon.delete_one({'pokemonName': name})
     
     return render_template('deletedPokemon.html', deletedPokemon=deleted_pokemon)
+
+@app.route('/updatePokemon', methods=('GET', 'POST'))
+@token_required
+def updatePokemon(current_user):
+    if request.method=='POST':
+        queryName = request.form['queryName']
+        pokedexNumber = int(request.form['pokedexNumber'])
+        pokemonName = request.form['pokemonName']
+        numberCaught = int(request.form['numberCaught'])
+        print(request.files['picture'])
+
+        image = request.files['picture']
+        name = image.filename
+        id = grid_fs.put(image, content_type = image.content_type, filename = name)
+        query = {
+            'id': id,
+            'pokedexNumber': pokedexNumber,
+            'pokemonName': pokemonName,
+            'numberCaught': numberCaught,
+        }
+        status = pokemon.update_one({'pokemonName': queryName},{"$set":query})
+
+        return redirect(url_for('home'))
+
+
+    return render_template('updatePokemon.html')
+
