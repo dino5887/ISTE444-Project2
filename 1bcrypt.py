@@ -10,6 +10,8 @@ bytes = password.encode('utf-8')
 salt = bcrypt.gensalt() 
 
 # Hashing the password 
-hash = bcrypt.hashpw(bytes, salt) 
+hash = str(bcrypt.hashpw(bytes, salt))
+hash = hash[2:-1]
+#output is weird so it has to be truncated
 
 print(hash)

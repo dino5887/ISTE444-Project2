@@ -15,11 +15,21 @@
     <h1>FlaskPokemon</h1>
     <hr>
     <div class="content">
-    <h2><a href ='/allPokemon' >View your Pokemon</a></h2>
+    <h2><a href ='/POST'>View your Pokemon</a></h2>
     <form method="post" enctype = "multipart/form-data">
         <p>
             <b><label for="content">Pokedex</label></b>
         </p>
+
+        <h2>Old Pokemon Name:</h2>
+
+        <p>
+            <input type="text" name="queryName"
+                placeholder="Old Pokemon Name Here"></input>
+        </p>
+
+        <h2>New Pokemon Information (Must input all):</h2>
+
         <p>
             <input type="text" name="pokedexNumber"
                 placeholder="Pokedex Number Here"></input>
@@ -34,6 +44,7 @@
             <input type="text" name="numberCaught"
                 placeholder="Number Caught"></input>
         </p>
+
         <h3>Upload picture of your pokemon</h3>
         <p>
             <input type="file" name="picture"></input>
