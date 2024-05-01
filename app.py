@@ -51,7 +51,7 @@ def login():
             foundUserPassBytes = bytes(foundUser['password'], 'utf-8')
             if bcrypt.checkpw(passwordBytes, foundUserPassBytes):
                 print("Login Successful")
-                app.logger.info('Login Successful for user ', username)
+                app.logger.info('%sLogin Successful for user ', username)
                 try:
                     #expiration of 8 hours
                     expiration = time.time() + 28800
@@ -78,7 +78,7 @@ def login():
                     "error": str(e),
                     "data": None
             }, 500
-    app.logger.info('Now rendering login page.')
+    app.logger.info('%sNow rendering login page for ', username)
     return render_template('login.html')
 
 @app.route('/home', methods=('GET', 'POST'))
@@ -101,7 +101,7 @@ def home(current_user):
             'numberCaught': numberCaught,
         }
         status = pokemon.insert_one(query)
-        app.logger.info('Successful insert of the Pokemon! Redirecting now for ', current_user)
+        app.logger.info('%sSuccessful insert of the Pokemon! Redirecting now for ', current_user)
         return redirect(url_for('home'))
 
     app.logger.info('Now rendering home page.')
@@ -130,7 +130,7 @@ def register():
             'role': 3
         }
         status = users.insert_one(query)
-        app.logger.info('Successful registration of the user! Redirecting now for ', username)
+        app.logger.info('%sSuccessful registration of the user! Redirecting now for ', username)
         return redirect(url_for('login'))
 
     app.logger.info('Now rendering register page.')
@@ -170,6 +170,7 @@ def allPokemon(self):
 @app.route('/deletePokemon')
 @token_required
 def deletePokemon(self):
+    app.logger.info('Start of the deletePokemon route. This is where the user can delete an existing/inputted pokemon.')
     name = request.args.get('pokemonName', type = str)
     single_pokemon = pokemon.find_one({'pokemonName': name})
     print(singlePokemon)
@@ -183,6 +184,7 @@ def deletePokemon(self):
 @app.route('/updatePokemon', methods=('GET', 'POST'))
 @token_required
 def updatePokemon(current_user):
+    app.logger.info('Start of the updatePokemon route. This is where the user can update an existing/inputted pokemon.')
     if request.method=='POST':
         queryName = request.form['queryName']
         pokedexNumber = int(request.form['pokedexNumber'])
@@ -201,7 +203,7 @@ def updatePokemon(current_user):
         }
         status = pokemon.update_one({'pokemonName': queryName},{"$set":query})
 
-        app.logger.info('Successful update of the Pokemon! Redirecting now for ', current_user)
+        app.logger.info('%sSuccessful update of the Pokemon! Redirecting now for ', current_user)
         return redirect(url_for('home'))
 
     app.logger.info('Now rendering updatePokemon page.')
