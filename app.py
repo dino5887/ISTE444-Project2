@@ -51,7 +51,7 @@ def login():
             foundUserPassBytes = bytes(foundUser['password'], 'utf-8')
             if bcrypt.checkpw(passwordBytes, foundUserPassBytes):
                 print("Login Successful")
-                app.logger.info('Login Successful.')
+                app.logger.info('Login Successful for user ', username)
                 try:
                     #expiration of 8 hours
                     expiration = time.time() + 28800
@@ -101,7 +101,7 @@ def home(current_user):
             'numberCaught': numberCaught,
         }
         status = pokemon.insert_one(query)
-        app.logger.info('Successful insert of the Pokemon! Redirecting now.')
+        app.logger.info('Successful insert of the Pokemon! Redirecting now for ', current_user)
         return redirect(url_for('home'))
 
     app.logger.info('Now rendering home page.')
@@ -130,7 +130,7 @@ def register():
             'role': 3
         }
         status = users.insert_one(query)
-        app.logger.info('Successful registration of the user! Redirecting now.')
+        app.logger.info('Successful registration of the user! Redirecting now for ', username)
         return redirect(url_for('login'))
 
     app.logger.info('Now rendering register page.')
@@ -147,7 +147,7 @@ def singlePokemon(self):
     image = base64_data.decode('utf-8')
     single_pokemon.update({"image":image})
     app.logger.info('If user input an existing Pokemon with the right name, they should see a Pokemon now.')
-    app.logger.info('Now rendering home page.')
+    app.logger.info('Now rendering singlePokemon page.')
     return render_template('singlePokemon.html', pokemonList=single_pokemon)
 
 @app.route('/allPokemon')
@@ -201,7 +201,7 @@ def updatePokemon(current_user):
         }
         status = pokemon.update_one({'pokemonName': queryName},{"$set":query})
 
-        app.logger.info('Successful update of the Pokemon! Redirecting now.')
+        app.logger.info('Successful update of the Pokemon! Redirecting now for ', current_user)
         return redirect(url_for('home'))
 
     app.logger.info('Now rendering updatePokemon page.')
