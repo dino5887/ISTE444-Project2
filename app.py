@@ -41,6 +41,7 @@ grid_fs = gridfs.GridFS(db)
 @app.route('/', methods=('GET', 'POST'))
 def login():
     app.logger.info('Start of the login route.')
+    username_placeholder = ''
     if request.method=='POST':
         try:
             username = request.form['username']
@@ -59,6 +60,7 @@ def login():
                     encoded_jwt = jwt.encode({"exp":expiration, "username": username, "role": foundUser['role']}, secret, algorithm="HS256")
                     res = flask.make_response(redirect(url_for('home'), 302))
                     res.set_cookie("token", value=encoded_jwt)
+                    username_placeholder = username
                     return res
                 except Exception as e:
                     app.logger.exception('Login hit exception during password check.')
@@ -79,7 +81,7 @@ def login():
                     "error": str(e),
                     "data": None
             }, 500
-    app.logger.info('Now rendering login page for %s', username)
+    app.logger.info('Now rendering login page for %s', username_placeholder)
     return render_template('login.html')
 
 @app.route('/home', methods=('GET', 'POST'))
