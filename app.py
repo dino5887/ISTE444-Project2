@@ -34,9 +34,7 @@ def login():
             foundUser = users.find_one({'username': username})
 
             passwordBytes = bytes(password, 'utf-8')
-            print(foundUser)
             foundUserPassBytes = bytes(foundUser['password'], 'utf-8')
-            print('hi')
             if bcrypt.checkpw(passwordBytes, foundUserPassBytes):
                 print("Login Successful")
                 try:
@@ -103,17 +101,24 @@ def singlePokemon(self):
     base64_data = codecs.encode(image.read(), 'base64')
     image = base64_data.decode('utf-8')
     single_pokemon.update({"image":image})
-    print(single_pokemon)
     return render_template('singlePokemon.html', pokemonList=single_pokemon)
 
 
 @app.route('/allPokemon')
 @token_required
-def allPokemon():
+def allPokemon(self):
 
-    all_pokemon = pokemon.find()
-    for single_pokemon in all_pokemon:
-        image = grid_fs.get(pkmn['id'])
+    all_pokemon = {}
+
+    for single_pokemon in pokemon.find():
+        image = grid_fs.get(single_pokemon['id'])
+        base64_data = codecs.encode(image.read(), 'base64')
+        image = base64_data.decode('utf-8')
+        single_pokemon.update({"image":image})
+        all_pokemon.update({single_pokemon['id']:single_pokemon})
+
+    # for pkmn in all_pokemon:
+    #     print(pkmn)
 
     return render_template('allPokemon.html', pokemonList=all_pokemon)
 
