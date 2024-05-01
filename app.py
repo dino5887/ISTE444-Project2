@@ -2,6 +2,7 @@ import codecs
 import os
 import time
 from flask import Flask, render_template, request, url_for, redirect
+import flask
 from pymongo import MongoClient
 import bcrypt
 import jwt
@@ -104,7 +105,7 @@ def home(current_user):
         app.logger.info('Successful insert of the Pokemon! Redirecting now for ', current_user)
         return redirect(url_for('home'))
 
-    app.logger.info('Now rendering home page.')
+    app.logger.info('Now rendering home page for ', current_user)
     return render_template('home.html',current_user=current_user)
 
 @app.route('/register', methods=('GET', 'POST'))
