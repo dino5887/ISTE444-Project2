@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>FlaskApp</title>
@@ -11,17 +12,19 @@
         }
     </style>
 </head>
+
 <body>
     <h1>FlaskPokemon</h1>
     <hr>
     <div class="content">
         <table>
-        <tr>
-            <td>{{pokemonList.pokemonName}}, #{{pokemonList.pokedexNumber}}</td>
-            <td>Number Caught: {{pokemonList.numberCaught}}</td>
-            <td><img src = "data:image/png;base64, {{pokemonList.image}}"/></td>
-        </tr>
+            <tr>
+                <td>{{pokemonList.pokemonName}}, #{{pokemonList.pokedexNumber}}</td>
+                <td>Number Caught: {{pokemonList.numberCaught}}</td>
+                <td><img src="data:image/png;base64, {{pokemonList.image}}" /></td>
+            </tr>
         </table>
     </div>
 </body>
+
 </html>
