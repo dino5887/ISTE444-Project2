@@ -13,17 +13,19 @@ from auth_middlewear import token_required
 import logging
 from datetime import datetime, timezone
 
-time_format = "%Y-%m-%d %H:%M:%ST%z"
-formatter = logging.Formatter(fmt='%(asctime)s - %(levelname)s - %(message)s', datefmt=time_format)
+# time_format = "%Y-%m-%d %H:%M:%ST%Z"
+time_format = "%Y-%m-%d %H:%M:%S T/%Z"
+log_format = fmt='%(asctime)s - %(levelname)s - %(message)s'
 
+logging.basicConfig(filename='app.log', encoding='utf-8', level=logging.INFO, format=log_format, datefmt=time_format)
 # Create a logger and set the custom formatter
-logger = logging.getLogger('custom_logger')
-handler = logging.StreamHandler()
-handler.setFormatter(formatter)
-logger.addHandler(handler)
+# logger = logging.getLogger('custom_logger')
+# handler = logging.StreamHandler()
+# handler.setFormatter(formatter)
+# logger.addHandler(handler)
 
 # Set the log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-logger.setLevel(logging.INFO)
+# logger.setLevel(logging.INFO)
 
 # logging.basicConfig(filename='app.log', level=logging.INFO, format='%(asctime)s %(levelname)s %(name)s : %(message)s')
 # logging.basicConfig(filename='record.log',
@@ -86,6 +88,7 @@ def login():
                         "error": "Something went wrong1",
                         "message": str(e)
                     }, 500
+            app.logger.error('ERROR WITH THE AUTHORIZATION')
             return {
                 "message": "Error fetching auth token!, invalid email or password",
                 "data": None,
