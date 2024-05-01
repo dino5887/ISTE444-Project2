@@ -52,7 +52,7 @@ def login():
             foundUserPassBytes = bytes(foundUser['password'], 'utf-8')
             if bcrypt.checkpw(passwordBytes, foundUserPassBytes):
                 print("Login Successful")
-                app.logger.info('%sLogin Successful for user ', username)
+                app.logger.info('Login Successful for user %s', username)
                 try:
                     #expiration of 8 hours
                     expiration = time.time() + 28800
@@ -79,7 +79,7 @@ def login():
                     "error": str(e),
                     "data": None
             }, 500
-    app.logger.info('%sNow rendering login page for ', username)
+    app.logger.info('Now rendering login page for %s', username)
     return render_template('login.html')
 
 @app.route('/home', methods=('GET', 'POST'))
@@ -102,7 +102,7 @@ def home(current_user):
             'numberCaught': numberCaught,
         }
         status = pokemon.insert_one(query)
-        app.logger.info('%sSuccessful insert of the Pokemon! Redirecting now for ', current_user)
+        app.logger.info('Successful insert of the Pokemon! Redirecting now for %s', current_user)
         return redirect(url_for('home'))
 
     app.logger.info('Now rendering home page for ', current_user)
@@ -131,7 +131,7 @@ def register():
             'role': 3
         }
         status = users.insert_one(query)
-        app.logger.info('%sSuccessful registration of the user! Redirecting now for ', username)
+        app.logger.info('Successful registration of the user! Redirecting now for %s', username)
         return redirect(url_for('login'))
 
     app.logger.info('Now rendering register page.')
@@ -204,7 +204,7 @@ def updatePokemon(current_user):
         }
         status = pokemon.update_one({'pokemonName': queryName},{"$set":query})
 
-        app.logger.info('%sSuccessful update of the Pokemon! Redirecting now for ', current_user)
+        app.logger.info('Successful update of the Pokemon! Redirecting now for %s', current_user)
         return redirect(url_for('home'))
 
     app.logger.info('Now rendering updatePokemon page.')
