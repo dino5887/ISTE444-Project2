@@ -10,10 +10,29 @@ import json
 import requests
 import gridfs
 from auth_middlewear import token_required
+import logging
+from datetime import datetime, timezone
 app = Flask(__name__)
 
 secret = 'aerop45gkaeh3$%Y^^YAc4'
 # Secure this or something if actually deployed
+
+app.logger.setLevel(logging.INFO)  # Set log level to INFO
+handler = logging.FileHandler('app.log')  # Log to a file
+app.logger.addHandler(handler)
+formatter = logging.Formatter("%(asctime)s;%(levelname)s;%(message)s","%Y-%m-%d %H:%M:%ST%z")
+
+# def utcformat(dt, timespecification='seconds'):
+#     """convert datetime to string in UTC format (YYYY-mm-ddTHH:MM:SSZ)"""
+#     iso_str = dt.astimezone(timezone.utc).isoformat(' ', timespecification)
+#     return iso_str.replace('+00:00', 'TZ')
+
+# def fromutcformat(utc_str, tz=None):
+#     iso_str = utc_str.replace('Z', '+00:00')
+#     return datetime.fromisoformat(iso_str).astimezone(tz)
+
+# now = datetime.now(tz=timezone.utc)
+# print(fromutcformat(utcformat(now)))
 
 client = MongoClient('localhost', 27017)
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -25,6 +44,7 @@ grid_fs = gridfs.GridFS(db)
 
 @app.route('/', methods=('GET', 'POST'))
 def login():
+    app.logger.info('Start of the login route.')
     if request.method=='POST':
         try:
             username = request.form['username']
@@ -37,16 +57,16 @@ def login():
             foundUserPassBytes = bytes(foundUser['password'], 'utf-8')
             if bcrypt.checkpw(passwordBytes, foundUserPassBytes):
                 print("Login Successful")
+                app.logger.info('Login Successful.')
                 try:
-                    #experation of 8 hours
+                    #expiration of 8 hours
                     expiration = time.time() + 28800
-                    encoded_jwt = jwt.encode({"exp":expiration, "username": username, "role": foundUser['role']}, secret, algorithm="HS256")            
-                    #res = flask.make_response(redirect(url_for('home')))
+                    encoded_jwt = jwt.encode({"exp":expiration, "username": username, "role": foundUser['role']}, secret, algorithm="HS256")
                     res = flask.make_response(redirect(url_for('home'), 302))
                     res.set_cookie("token", value=encoded_jwt)
-                    #res.headers['location'] = url_for('home')
                     return res
                 except Exception as e:
+                    app.logger.exception('Login hit exception during password check.')
                     return {
                         "error": "Something went wrong1",
                         "message": str(e)
@@ -57,14 +77,13 @@ def login():
                 "error": "Unauthorized"
             }, 404
         except Exception as e:
+            app.logger.exception('Login hit exception during getting username and password from form.')
             return {
                     "message": "Something went wrong!2",
                     "error": str(e),
                     "data": None
             }, 500
-        # return redirect(url_for('login'))
     return render_template('login.html')
-
 
 @app.route('/home', methods=('GET', 'POST'))
 @token_required
@@ -85,7 +104,6 @@ def home(current_user):
             'numberCaught': numberCaught,
         }
         status = pokemon.insert_one(query)
-
         return redirect(url_for('home'))
 
 
