@@ -107,7 +107,7 @@ def home(current_user):
         app.logger.info('Successful insert of the Pokemon! Redirecting now for %s', current_user)
         return redirect(url_for('home'))
 
-    app.logger.info('Now rendering home page for ', current_user)
+    app.logger.info('Now rendering home page for %s', current_user)
     return render_template('home.html',current_user=current_user)
 
 @app.route('/register', methods=('GET', 'POST'))
