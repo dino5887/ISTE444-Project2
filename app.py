@@ -94,26 +94,30 @@ def home(current_user):
 @app.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method=='POST':
-        pokedexNumber = int(request.form['pokedexNumber'])
-        pokemonName = request.form['pokemonName']
-        numberCaught = int(request.form['numberCaught'])
-        print(request.files['picture'])
+        username = request.form['username']
+        password = request.form['password']
 
-        image = request.files['picture']
-        name = image.filename
-        id = grid_fs.put(image, content_type = image.content_type, filename = name)
+        # converting password to array of bytes 
+        bytes = password.encode('utf-8') 
+
+        # generating the salt 
+        salt = bcrypt.gensalt() 
+
+        hash = str(bcrypt.hashpw(bytes, salt))
+        hash = hash[2:-1]
+        #output is weird so it has to be truncated
+
         query = {
-            'id': id,
-            'pokedexNumber': pokedexNumber,
-            'pokemonName': pokemonName,
-            'numberCaught': numberCaught,
+            'username': username,
+            'password': hash,
+            'role': 3
         }
-        status = pokemon.insert_one(query)
+        status = users.insert_one(query)
 
-        return redirect(url_for('home'))
+        return redirect(url_for('login'))
 
 
-    return render_template('home.html')
+    return render_template('register.html')
 
 
 

@@ -12,33 +12,21 @@
     </style>
 </head>
 <body>
-    <h1>FlaskPokemon</h1>
+    <h1>Register for FlaskPokedex</h1>
     <hr>
     <div class="content">
-    <h2><a href ='/allPokemon' >View your Pokemon</a></h2>
-    <form method="post" enctype = "multipart/form-data">
+    <h2><a href ='/login' >Login</a></h2>
+    <form method="post">
+
         <p>
-            <b><label for="content">Pokedex</label></b>
-        </p>
-        <p>
-            <input type="text" name="pokedexNumber"
-                placeholder="Pokedex Number Here"></input>
+            <input type="text" name="username"
+                placeholder="Name Here"></input>
         </p>
 
         <p>
-            <input type="text" name="pokemonName"
-                placeholder="Pokemon Name Here"></input>
+            <input type="text" name="password"
+                placeholder="Password Here"></input>
         </p>
-
-        <p>
-            <input type="text" name="numberCaught"
-                placeholder="Number Caught"></input>
-        </p>
-        <h3>Upload picture of your pokemon</h3>
-        <p>
-            <input type="file" name="picture"></input>
-        </p>
-
 
         <button type="submit">Submit</button>
     </form>
